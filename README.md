@@ -7,7 +7,7 @@ This repository contains code and resources for classifying images from the Stan
 
 ## Dataset
 
-The dataset consists of images of dogs from different breeds and is available in the `images.tar` file.
+The dataset consists of images of dogs from different breeds and is available in the `images.tar` file. You can download the file from the link http://vision.stanford.edu/aditya86/ImageNetDogs/
 
 ## Dependencies
 
