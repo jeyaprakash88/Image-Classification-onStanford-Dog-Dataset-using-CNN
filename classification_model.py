@@ -103,17 +103,12 @@ from keras.preprocessing.image import ImageDataGenerator
 
 # ## Load the data :
 
-# In[2]:
-
-
 # Give the file path for the image folders where it is stored
 
-file_path = "C:/Users/c22081255/OneDrive - Cardiff University/Desktop/Data Science and Analytics/CMT307 Applied Machine Learning/Course_work_2/Images"
+file_path = "/Images"
 
 
 # ## Breed Selection by semantic features
-
-# In[3]:
 
 
 import nltk
@@ -161,9 +156,6 @@ print("Selected breeds:")
 print(selected_breeds)
 
 
-# In[4]:
-
-
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
@@ -190,9 +182,6 @@ for breed in selected_breeds:
 
 # ### Initially working with only 10 dog breeds
 
-# In[5]:
-
-
 # reading the path name, Breed name, label of the each image 
 breeds = [breed.split('-',1)[1] for breed in selected_breeds]
 
@@ -207,17 +196,11 @@ for counter, fullpath in enumerate(fullpaths):
 m=list(chain.from_iterable(m))
 
 
-# In[6]:
-
-
 # to get the image size
 
 for i in range(len(m)):
     with Image.open(m[i]) as img:
         z.append(np.array(img).shape)
-
-
-# In[7]:
 
 
 # creating a dataframe with 'Path', 'id', 'Breed_Name', 'Image_size'
@@ -227,19 +210,10 @@ m[:], label[:], y[:], z[:] = zip(*combined)
 df = pd.DataFrame(combined, columns =['Path', 'id', 'breed', 'Image_size'])
 df['Height'] = df['Image_size'].apply(lambda m: m[0])
 df['Width'] = df['Image_size'].apply(lambda m: m[1])
-
-
-# In[8]:
-
-
 df.head()
 
 
 # #### Creating label as train and test
-
-# In[9]:
-
-
 # Getting the Dog breed name
 Breeds = df['breed'].unique()
 
@@ -262,52 +236,27 @@ df
 
 
 # ## 1.Exploratory Data Analysis by analyzing the dataset<a name="1"></a>
-
-# In[10]:
-
-
 # Checking the shape of the dataset:
 df.shape
-
-
-# In[11]:
-
 
 # Checking the data type of each columns and non-null count:
 df.info()
 
-
-# In[12]:
-
-
 #Find the duplicates
 df.duplicated().sum()
 
-
-# In[13]:
-
-
 df.describe()
 
-
-# In[14]:
-
-
 df.describe(include='object')
-
-
-# In[15]:
-
 
 # to find the counts of the each breed
 
 df['breed'].value_counts()
 
 
+
+
 # ## 2. EDA By visualization<a name="5"></a>
-
-# In[16]:
-
 
 #plotting the breeds againt the count
 
@@ -316,10 +265,6 @@ chart = sns.countplot(data=df, x='breed', palette='Set1')
 chart.set_xticklabels(chart.get_xticklabels(), rotation=45, horizontalalignment='right')
 
 plt.show()
-
-
-# In[17]:
-
 
 # create scatter plot
 plt.scatter(df['Width'], df['Height'])
@@ -331,10 +276,6 @@ plt.title('Scatter Plot of Image Dimensions')
 
 # show the plot
 plt.show()
-
-
-# In[18]:
-
 
 # create a bar chart of image height and image width
 heights = df['Height']
@@ -358,10 +299,6 @@ plt.show()
 
 
 # ## 3.STATISTICAL ANALYSIS<a name="3"></a>
-
-# In[19]:
-
-
 # Encode categorical variables, if any
 new_df = pd.get_dummies(df, columns=['breed'])
 
@@ -370,10 +307,6 @@ summary_stats = new_df.describe()
 
 # Print the summary statistics
 print(summary_stats)
-
-
-# In[20]:
-
 
 # Displaying images randomly
 
@@ -391,10 +324,6 @@ plt.show()
 
 
 # #### Mean / SD Pixel Intensity
-
-# In[26]:
-
-
 # Assume 'img_paths' is a list of paths to your image dataset
 pixel_intensities = []
 
@@ -414,10 +343,6 @@ print("Standard deviation of pixel intensity:", std_dev)
 
 
 # #### SIFT (Scale-Invariant Feature Transform)
-
-# In[22]:
-
-
 import cv2
 import random
 
@@ -509,9 +434,6 @@ print('Standard deviation image:', stddev_image)
 # 
 # Overall, the mean image and standard deviation image can be useful for gaining insights into the characteristics of the image dataset and for normalizing the pixel values of the images before training a machine learning model.
 
-# In[28]:
-
-
 #Converting Grayscale
 
 from skimage.color import rgb2gray
@@ -524,10 +446,6 @@ for counter, i in enumerate(random.sample(range(0, len(m)), 1)):
     ed_sobel = filters.sobel(grayscale)
     plt.imshow(ed_sobel, cmap='Greys');
 
-
-# In[29]:
-
-
 #Plotting the Image and the Histogram of gray values
 
 from skimage.exposure import histogram
@@ -539,21 +457,11 @@ axes[1].plot(hist_centers, hist, lw=2)
 axes[1].set_title('histogram of gray values')
 
 
-# In[18]:
-
-
 labels = df[['id','breed']][(df["label"] == 'train')].reset_index(drop=True)
 labels.head()
 
 
-# In[19]:
-
-
 labels.describe()
-
-
-# In[20]:
-
 
 #function to show bar length
 def bar_chart(ax): 
@@ -574,9 +482,6 @@ plt.show()
 
 # ## 4.SPLITTING OF DATASET<a name="2"></a>
 
-# In[21]:
-
-
 train = df[['Path', 'id','breed']][(df["label"] == 'train')].reset_index(drop=True)
 test = df[['Path', 'id','breed']][(df["label"] == 'test')].reset_index(drop=True)
 
@@ -586,9 +491,6 @@ train_y = train.iloc[:, 1:]
 
 test_x = test.iloc[:, 0]
 test_y = test.iloc[:, 1:]
-
-
-# In[22]:
 
 
 #Create list of alphabetically sorted labels.
@@ -602,11 +504,9 @@ breed_to_num = dict(zip(classes, range(n_classes)))
 breed_to_num
 
 
+
+
 # ### 5.DATA PRE-PROCESSING<a name="4"></a>
-
-# In[11]:
-
-
 input_shape = (150,150,3)
 
 # convert the image to array for train image and the label
@@ -632,9 +532,6 @@ def images_to_array(directory, label_dataframe, target_size = input_shape):
     return images,y
 
 
-# In[12]:
-
-
 #Function to read images from test directory
 img_size = (150,150,3)
 
@@ -653,9 +550,6 @@ def images_to_array_test(test_path, img_size = (150,150,3)):
     return images
 
 
-# In[25]:
-
-
 import time 
 t = time.time()
 
@@ -664,15 +558,8 @@ X,y = images_to_array(train_x, train_y)
 print('runtime in seconds: {}'.format(time.time() - t))
 
 
-# In[26]:
-
-
 test_data = images_to_array_test(test_x, img_size)
 X_test,y_test = images_to_array(test_x, test_y)
-
-
-# In[27]:
-
 
 # lets check some dogs and their breeds
 n=25
@@ -688,9 +575,6 @@ for i in range(n):
 
 
 # ## 6.DATA AUGMENTATION<a name="6"></a>
-
-# In[28]:
-
 
 # assume x_train and y_train are the training data
 x_train, x_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -747,10 +631,6 @@ test_generator = test_datagen.flow(
     batch_size=batch_size,
     shuffle=False)
 
-
-# In[29]:
-
-
 img_id = 2
 dog_generator = train_datagen.flow(x_train[img_id:img_id+1], y_train[img_id:img_id+1],
                                   shuffle = False, batch_size = batch_size, seed = 1)
@@ -777,9 +657,6 @@ plt.show()
 # <li>Fully connected layers: The final layer of the CNN is a fully connected layer that takes the output of the convolutional and pooling layers and produces the final classification output.</li></p>
 
 # ### 7.1.1 Base Model<a name="711"></a>
-
-# In[30]:
-
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
@@ -827,27 +704,13 @@ model.add(Dropout(0.5))
 model.add(Dense(n_classes, activation='softmax'))
 
 
-# In[31]:
-
-
 # Compile the model with categorical cross-entropy loss, the Adam optimizer, and accuracy as the metric
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 
-# In[32]:
-
-
 print(model.summary())
 
-
-# In[20]:
-
-
 plot_model(model, to_file='model.png', show_shapes=True, show_layer_names=True)
-
-
-# In[33]:
-
 
 # Train the model with regularization and early stopping callbacks
 
@@ -858,9 +721,6 @@ history = model.fit_generator(train_generator,
                               validation_steps=validation_steps,
                               callbacks=[ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, min_lr=1e-6),
                                          EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)])
-
-
-# In[34]:
 
 
 # Evaluate the model on the test set
@@ -875,9 +735,6 @@ scores = model.evaluate(X_test, y_test, verbose=0)
 
 # Print the mean accuracy
 print("Mean accuracy: %.2f%%" % (scores[1]*100))
-
-
-# In[35]:
 
 
 # Plot the training and validation accuracy values
@@ -918,9 +775,6 @@ plt.show()
 
 # ### 7.1.2 Model with More Layers & Dropout<a name="712"></a>
 
-# In[36]:
-
-
 
 # Define the model architecture
 model = Sequential()
@@ -938,23 +792,13 @@ model.add(layers.Dense(512, activation='relu'))
 model.add(layers.Dense(10, activation='softmax'))
 
 
-# In[37]:
-
-
 # Compile the model with categorical crossentropy and RMSprop optimizer
 
 model.compile(loss='categorical_crossentropy',
               optimizer=optimizers.RMSprop(lr=1e-4),
               metrics=['acc'])
 
-
-# In[23]:
-
-
 plot_model(model, to_file='model.png', show_shapes=True, show_layer_names=True)
-
-
-# In[ ]:
 
 
 # Train the model with fit_generator
@@ -967,9 +811,6 @@ history = model.fit_generator(
     validation_steps=validation_steps)
 
 
-# In[ ]:
-
-
 # Evaluate the model on the test set
 
 test_loss, test_acc = model.evaluate_generator(test_generator, steps=test_generator.n//test_generator.batch_size)
@@ -978,8 +819,6 @@ test_loss, test_acc = model.evaluate_generator(test_generator, steps=test_genera
 print('Test loss:', test_loss)
 print('Test accuracy:', test_acc)
 
-
-# In[ ]:
 
 
 # Plot the training and validation accuracy values
@@ -1008,9 +847,6 @@ plt.show()
 
 # #### 7.1.3 Model with Some hyperparameter tuning<a name="713"></a>
 
-# In[38]:
-
-
 # Build the model architecture
 
 model = models.Sequential()
@@ -1028,9 +864,6 @@ model.add(layers.Dense(512, activation='relu'))
 model.add(layers.Dense(10, activation='softmax'))
 
 
-# In[39]:
-
-
 # Compile the model with categorical crossentropy and RMSprop optimizer
 
 model.compile(loss='categorical_crossentropy',
@@ -1038,14 +871,7 @@ model.compile(loss='categorical_crossentropy',
               metrics=['acc'])
 
 
-# In[40]:
-
-
 plot_model(model, to_file='model.png', show_shapes=True, show_layer_names=True)
-
-
-# In[41]:
-
 
 # Train the model with fit_generator
 
@@ -1055,9 +881,6 @@ history = model.fit_generator(
     epochs=30,
     validation_data=val_generator,
     validation_steps=validation_steps)
-
-
-# In[42]:
 
 
 # Plot the training and validation accuracy values
@@ -1085,9 +908,6 @@ plt.show()
 
 
 # #### 7.1.3.1 Model Testing & Result analysis<a name="7131"></a>
-
-# In[43]:
-
 
 from sklearn.metrics import confusion_matrix
 # Evaluate the model on the test set
@@ -1133,9 +953,6 @@ for i, j in np.ndindex(conf_matrix.shape):
 plt.show()
 
 
-# In[44]:
-
-
 # switch the keys and values of the original dictionary
 num_to_breed = {v: k for k, v in breed_to_num.items()}
 
@@ -1145,9 +962,6 @@ prediction_breeds = [num_to_breed[num] for num in y_pred]
 
 predict_df = pd.DataFrame({'Target_Labels':target_breeds, 'predictions': prediction_breeds})
 predict_df
-
-
-# In[45]:
 
 
 plt.figure(figsize = (30,50))
@@ -1164,9 +978,6 @@ plt.show()
 
 
 # #### 7.1.3.2 Error Analysis<a name="7132"></a>
-
-# In[65]:
-
 
 predict_df['count'] = 1
 misclass_df = predict_df[predict_df['Target_Labels'] != predict_df['predictions']].groupby(['Target_Labels', 'predictions']).sum().sort_values(['count'], ascending=False).reset_index()
@@ -1190,9 +1001,6 @@ ax.set_title('Top 30 Misclassified Breed Pairs')
 plt.show()
 
 
-# In[66]:
-
-
 # Analyze misclassified images
 misclassified_indices = np.where(y_pred != y_true)[0]
 misclassified_images = test_data[misclassified_indices]
@@ -1214,7 +1022,6 @@ for i in range(len(misclassified_indices)):
 
 # #### 7.2.1 Base Model<a name="721"></a>
 
-# In[67]:
 
 
 from tensorflow.keras.models import Model
@@ -1249,13 +1056,10 @@ early_stop = EarlyStopping(patience=5, monitor='val_loss')
 model.summary()
 
 
-# In[28]:
 
 
 plot_model(model, to_file='model.png', show_shapes=True, show_layer_names=True)
 
-
-# In[ ]:
 
 
 # Train the model with early stopping
@@ -1270,9 +1074,6 @@ history = model.fit_generator(train_generator,
                               callbacks=[early_stop])
 
 
-# In[ ]:
-
-
 # Evaluate the model on the test set
 
 test_loss, test_acc = model.evaluate_generator(test_generator, steps=test_generator.n//test_generator.batch_size)
@@ -1281,9 +1082,6 @@ test_loss, test_acc = model.evaluate_generator(test_generator, steps=test_genera
 print('Test loss:', test_loss)
 print('Test accuracy:', test_acc)
 # Evaluate the model on the test set
-
-
-# In[ ]:
 
 
 # Plot training and validation loss
@@ -1306,8 +1104,6 @@ plt.show()
 
 
 # #### 7.2.2 Model with More Layers & Dropout <a name="722"></a>
-
-# In[30]:
 
 
 from tensorflow.keras.models import Model
@@ -1342,13 +1138,9 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 early_stop = EarlyStopping(patience=5, monitor='val_loss')
 
 
-# In[30]:
-
-
 plot_model(model, to_file='model.png', show_shapes=True, show_layer_names=True)
 
 
-# In[31]:
 
 
 train_steps_per_epoch = x_train.shape[0]//batch_size
@@ -1359,9 +1151,6 @@ history = model.fit_generator(train_generator,
                               validation_steps=val_steps_per_epoch,
                               epochs = 30, verbose=1,
                               callbacks=[early_stop])
-
-
-# In[32]:
 
 
 #plot accuracy and loss
@@ -1386,7 +1175,6 @@ plt.show()
 
 # #### 7.2.2.1 Model Testing & Result Analysis<a name="7221"></a>
 
-# In[33]:
 
 
 from sklearn.metrics import confusion_matrix
@@ -1433,7 +1221,6 @@ for i, j in np.ndindex(conf_matrix.shape):
 plt.show()
 
 
-# In[34]:
 
 
 # switch the keys and values of the original dictionary
