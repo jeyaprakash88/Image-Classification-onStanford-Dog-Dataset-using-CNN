@@ -3,11 +3,11 @@
 
 ## Overview
 
-This repository contains code and resources for classifying images from the Stanford Dog Dataset using Convolutional Neural Networks (CNNs). The project is based on the Jupyter notebook `groupCode_G13.ipynb`.
+This repository contains code and resources for classifying images from the Stanford Dog Dataset using Convolutional Neural Networks (CNNs). The project is based on the Jupyter notebook `classification_model.py`.
 
 ## Dataset
 
-The dataset consists of images of dogs from different breeds and is available in the [`images.tar` file](http://vision.stanford.edu/aditya86/ImageNetDogs/).
+The dataset consists of images of dogs from different breeds and is available in the [`images.tar`](http://vision.stanford.edu/aditya86/ImageNetDogs/).
 
 ## Dependencies
 
